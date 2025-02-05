@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أسئلة دينية تفاعلية</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(45deg, #0f2027, #203a43, #2c5364);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .glass-container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 54px;
+    width: 115%;
+    max-width: 840px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    margin: 21px;
+}
+        h1 {
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .question-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        #question {
+            color: #fff;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* جعل العمودين بالتساوي */
+    gap: 10px;
+}
+
+        .option {
+            padding: 12px;
+            font-size: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .option:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .option.correct {
+            background: #4CAF50;
+            box-shadow: 0 0 15px #4CAF50;
+        }
+
+        .option.incorrect {
+            background: #f44336;
+            box-shadow: 0 0 15px #f44336;
+        }
+
+        .counter {
+            color: #fff;
+            margin-top: 15px;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.3s;
+            margin: 5px;
+        }
+
+        #next-btn {
+            display: block;
+            margin: 25px auto 0;
+            padding: 12px 40px;
+            background: linear-gradient(45deg, #00b4d8, #0077b6);
+            border: none;
+            border-radius: 30px;
+            color: #fff;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #next-btn:hover {
+            background: #00b4d8;
+            box-shadow: 0 0 20px #00b4d8;
+        }
+
+        #restart-btn {
+            background: #ff9800;
+            box-shadow: 0 0 20px #ffb01c;
+            margin: 25px auto 0;
+            padding: 12px 40px;
+            font-size: 16px;
+        }
+
+        #restart-btn:hover {
+            background: #ffb74d;
+        }
+    </style>
+</head>
+<body>
+    <div class="glass-container">
+        <h1>أسئلة دينية تفاعلية</h1>
+        <div class="question-box">
+            <div id="question"></div>
+            <div class="options" id="options"></div>
+            <div class="counter" id="counter"></div>
+        </div>
+        <div class="buttons">
+            <button id="next-btn" onclick="nextQuestion()">التالي →</button>
+            <button id="restart-btn" onclick="restartQuiz()" style="display: none;">إعادة الاختبار</button>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestion = 0;
+        let score = 0;
+        let shuffledQuestions = [];
+
+        const questions = [
+    { question: "من أول من أهدى له رسول الله صلى الله عليه وسلم كتابًا من صحائفه؟", options: ["عبد الله بن عبد المطلب", "حكيم بن حزام", "علي بن أبي طالب", "أبو سفيان"], correct: 1 },
+    { question: "ما هو اسم أول مسجد بني في الإسلام؟", options: ["المسجد النبوي", "المسجد الأقصى", "مسجد قباء", "مسجد قبا"], correct: 2 },
+    { question: "من هو الصحابي الذي كانت فتوحات المسلمين تحت قيادته في معركة القادسية؟", options: ["أبو بكر الصديق", "عمر بن الخطاب", "سعد بن أبي وقاص", "عثمان بن عفان"], correct: 2 },
+    { question: "ما هو اسم النبي الذي ابتلعته الحوت ثم ألقاه الله على الشاطئ؟", options: ["يونس عليه السلام", "موسى عليه السلام", "إبراهيم عليه السلام", "عيسى عليه السلام"], correct: 0 },
+    { question: "أي من هذه السور تتضمن آية الكرسي؟", options: ["البقرة", "آل عمران", "النساء", "المائدة"], correct: 0 },
+    { question: "ما هو عدد السجدات في القرآن الكريم؟", options: ["12", "14", "15", "17"], correct: 1 },
+    { question: "من هو أول من أسلم من الرجال؟", options: ["أبو بكر الصديق", "علي بن أبي طالب", "عثمان بن عفان", "عبد الله بن مسعود"], correct: 0 },
+    { question: "كم عدد غزوات النبي صلى الله عليه وسلم؟", options: ["10", "17", "21", "27"], correct: 2 },
+    { question: "ما هو اسم زوجة فرعون التي آمنت بموسى عليه السلام؟", options: ["مريم", "آسية", "عائشة", "فاطمة"], correct: 1 },
+    { question: "في أي عام وقعت غزوة بدر؟", options: ["1 هـ", "2 هـ", "3 هـ", "4 هـ"], correct: 1 },
+    { question: "من هو الصحابي الذي لقب بـ'ذو النورين'؟", options: ["عثمان بن عفان", "علي بن أبي طالب", "أبو بكر الصديق", "عبد الرحمن بن عوف"], correct: 0 },
+    { question: "ما هو عدد سنوات بعثة النبي صلى الله عليه وسلم؟", options: ["20 سنة", "23 سنة", "25 سنة", "30 سنة"], correct: 1 },
+    { question: "من هو آخر الأنبياء؟", options: ["عيسى عليه السلام", "محمد صلى الله عليه وسلم", "موسى عليه السلام", "إبراهيم عليه السلام"], correct: 1 },
+    { question: "في أي عام هجري توفي النبي صلى الله عليه وسلم؟", options: ["10 هـ", "11 هـ", "12 هـ", "13 هـ"], correct: 1 },
+    { question: "ما اسم الصحابي الذي كان يعرف بلقب 'أسد الله'؟", options: ["علي بن أبي طالب", "حمزة بن عبد المطلب", "الزبير بن العوام", "سعد بن أبي وقاص"], correct: 1 }
+];
+
+
+
+
+        function shuffleQuestions() {
+            shuffledQuestions = [...questions].sort(() => Math.random() - 0.5);
+        }
+
+        function initializeQuestion() {
+            if (currentQuestion >= shuffledQuestions.length) {
+                alert(`انتهت الأسئلة! نتيجتك: ${score}/${shuffledQuestions.length}`);
+                document.getElementById('next-btn').style.display = 'none';
+                document.getElementById('restart-btn').style.display = 'inline-block';
+                return;
+            }
+
+            
+            let questionData = shuffledQuestions[currentQuestion];
+            document.getElementById('question').textContent = questionData.question;
+            const optionsContainer = document.getElementById('options');
+            optionsContainer.innerHTML = '';
+
+            questionData.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = 'option';
+                button.textContent = option;
+                button.onclick = () => checkAnswer(index === questionData.correct, button);
+                optionsContainer.appendChild(button);
+            });
+            document.getElementById('counter').textContent = `السؤال ${currentQuestion + 1} من ${shuffledQuestions.length}`;
+        }
+
+        function checkAnswer(isCorrect, button) {
+            const options = document.querySelectorAll('.option');
+            options.forEach(opt => opt.disabled = true);
+            if (isCorrect) {
+                button.classList.add('correct');
+                score++;
+            } else {
+                button.classList.add('incorrect');
+                options[shuffledQuestions[currentQuestion].correct].classList.add('correct');
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            initializeQuestion();
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            shuffleQuestions();
+            document.getElementById('next-btn').style.display = 'inline-block';
+            document.getElementById('restart-btn').style.display = 'none';
+            initializeQuestion();
+        }
+
+        shuffleQuestions();
+        initializeQuestion();
+    </script>
+    
+</body>
+</html>" 

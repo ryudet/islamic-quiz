@@ -1,0 +1,136 @@
+body {
+    font-family: 'Cairo', sans-serif;
+    direction: rtl;
+    text-align: center;
+    background: url('background.jpg') no-repeat center center/cover;
+    margin: 0;
+    padding: 0;
+}
+
+.quiz-container {
+    width: 90%;
+    max-width: 600px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 25px;
+    margin: 50px auto;
+    border-radius: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    transition: 0.3s;
+}
+
+.quiz-container:hover {
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+h1 {
+    color: #252525;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+h2 {
+    color: #252525;
+    font-size: 24px;
+    padding: 0;
+    margin:0px 0px 20px 0px;
+}
+
+#question-image {
+    width: 60%;
+    height: auto;
+    border-radius: 12px;
+    margin: 20px 20px 0 20px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#answers-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.answer-button {
+    background-color: rgba(10, 116, 187, 0.849);
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: 12px;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 20px;
+    transition: 0.3s;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.answer-button:hover {
+    background-color: rgba(41, 128, 185, 0.8);
+    transform: scale(1.05);
+}
+
+#timer {
+    font-size: 20px;
+    font-weight: bold;
+    color: #ff4935;
+    margin-top: 15px;
+}
+
+#next-button {
+    background-color: rgb(46, 204, 112);
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    margin-top: 20px;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 20px;
+    transition: 0.3s;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#next-button:hover {
+    background-color: rgba(47, 255, 134, 0.8);
+    transform: scale(1.05);
+}
+
+#restart-button {
+    background-color: rgb(0, 144, 155);
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    margin: 15px;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 18px;
+    transition: 0.3s;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#restart-button:hover {
+    background-color: rgba(20, 188, 255, 0.8);
+    transform: scale(1.05);
+}
+#result-container {
+    display: none;
+    padding-top: 20px;
+    color: #fff;
+}
+
+#score {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1a1a1a;
+    padding: 0;
+    margin: 0;
+}
+
+p {
+    color: #1a1a1a;
+    font-size: 20px;
+}
+h3 {
+    color: #bd0048;
+    font-size: 27px;
+    margin: 10px;
+}
